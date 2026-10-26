@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JL | Halloween Prank</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  color: white;
+  background: radial-gradient(circle, #351010, #080808 75%);
+}
+
+.card {
+  width: 92%;
+  max-width: 440px;
+  padding: 25px 20px;
+}
+
+.pumpkin {
+  font-size: 65px;
+  margin-bottom: 15px;
+}
+
+h1 {
+  font-size: clamp(28px, 7vw, 38px);
+  line-height: 1.25;
+}
+
+p {
+  color: #d2caca;
+  line-height: 1.6;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 28px 0;
+}
+
+button {
+  border: 0;
+  border-radius: 10px;
+  padding: 14px 27px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#yes {
+  background: #ff6500;
+  color: white;
+}
+
+#no {
+  background: #282828;
+  color: white;
+  border: 1px solid #888;
+}
+
+button:active {
+  transform: scale(.96);
+}
+
+#reveal {
+  display: none;
+}
+
+#scareImage {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  margin: 20px auto;
+  border-radius: 5px;
+}
+
+#reveal.show {
+  display: block;
+}
+
+#question.hide {
+  display: none;
+}
+
+.scary {
+  animation: zoom .35s ease-out;
+}
+
+@keyframes zoom {
+  from { transform: scale(.05); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.footer {
+  margin-top: 35px;
+  color: #888;
+  font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+<main class="card">
+
+  <section id="question">
+    <div class="pumpkin">🎃</div>
+    <p>WELCOME TO THE DARK SIDE</p>
+
+    <h1>Do you want to celebrate Halloween?</h1>
+
+    <p>Choose your answer... if you dare. 👻</p>
+
+    <div class="buttons">
+      <button id="yes" onclick="revealScare()">YES 🎃</button>
+      <button id="no" onclick="revealScare()">NO 👻</button>
+    </div>
+  </section>
+
+  <section id="reveal">
+    <h1>👁️ YOU'VE BEEN WARNED!</h1>
+
+    <img
+      id="scareImage"
+      class="scary"
+      src="1000008817.jpg"
+      alt="Halloween jumpscare"
+    >
+
+    <p>Happy Halloween... 😈</p>
+
+    <button id="yes" onclick="goBack()">TRY AGAIN</button>
+  </section>
+
+  <p class="footer">Created by JL · Halloween Project</p>
+
+</main>
+
+<script>
+function revealScare() {
+  document.getElementById("question").classList.add("hide");
+  document.getElementById("reveal").classList.add("show");
+
+  // Optional brief browser-generated horror sound.
+  // Sound starts only after the visitor clicks.
+  try {
+    const AudioContext =
+      window.AudioContext || window.webkitAudioContext;
+
+    if (AudioContext) {
+      const ctx = new AudioContext();
+      const oscillator = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      oscillator.type = "sawtooth";
+      oscillator.frequency.setValueAtTime(100, ctx.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(
+        700, ctx.currentTime + 0.35
+      );
+
+      gain.gain.setValueAtTime(0.12, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(
+        0.001, ctx.currentTime + 0.7
+      );
+
+      oscillator.connect(gain);
+      gain.connect(ctx.destination);
+      oscillator.start();
+      oscillator.stop(ctx.currentTime + 0.7);
+      oscillator.onended = () => ctx.close();
+    }
+  } catch (error) {
+    // The prank still works if sound is unavailable.
+  }
+}
+
+function goBack() {
+  document.getElementById("reveal").classList.remove("show");
+  document.getElementById("question").classList.remove("hide");
+}
+</script>
+</body>
+</html>
